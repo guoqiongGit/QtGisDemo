@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+      <file>../../res/ribbonbackstageback_icon.png</file>
+      <file>../../res/standard_images.png</file>
+</qresource>
+</RCC>

@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/QtGis">
+        <file>images/res/clipboard16x16.png</file>
+        <file>images/res/clipboard32x32.png</file>
+        <file>images/res/close16x16.png</file>
+        <file>images/res/close32x32.png</file>
+        <file>images/res/cut16x16.png</file>
+        <file>images/res/new16x16.png</file>
+        <file>images/res/new32x32.png</file>
+        <file>images/res/open16x16.png</file>
+        <file>images/res/open32x32.png</file>
+        <file>images/res/print16x16.png</file>
+        <file>images/res/print32x32.png</file>
+        <file>images/res/redo16x16.png</file>
+        <file>images/res/save16x16.png</file>
+        <file>images/res/save32x32.png</file>
+        <file>images/res/saveasfile16x16.png</file>
+        <file>images/res/saveasfile32x32.png</file>
+        <file>images/res/undo16x16.png</file>
+        <file>images/res/mActionAddRasterLayer.svg</file>
+        <file>images/res/mActionAddVectorLayer.svg</file>
+    </qresource>
+</RCC>

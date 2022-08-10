@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RibbonMainWindow</class>
+ <widget class="RibbonMainWindow" name="RibbonMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RibbonMainWindow</string>
+  </property>
+  <widget class="RibbonWorkspace" name="centralWidget"/>
+  <widget class="RibbonBar" name="ribbonBar"/>
+  <widget class="RibbonStatusBar" name="statusBar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RibbonMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>QtnRibbonMainWindow.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RibbonBar</class>
+   <extends>QMenuBar</extends>
+   <header>QtnRibbonBar.h</header>
+   <addpagemethod>addPage</addpagemethod>
+  </customwidget>
+  <customwidget>
+   <class>RibbonWorkspace</class>
+   <extends>QWidget</extends>
+   <header>QtnRibbonWorkspace.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RibbonStatusBar</class>
+   <extends>QStatusBar</extends>
+   <header>QtnRibbonStatusBar.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
