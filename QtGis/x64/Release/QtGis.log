@@ -1,4 +1,0 @@
-﻿  Reading Qt configuration (D:/Qt/5.15.2/msvc2019_64/bin/qmake)
-  QtGis.cpp
-E:\1_project\5_2022\selfProject\QtGis\3rdPart\QGISDev\include\qgsfield.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  QtGis.vcxproj -> E:\1_project\5_2022\selfProject\QtGis\x64\Release\QtGis.exe
