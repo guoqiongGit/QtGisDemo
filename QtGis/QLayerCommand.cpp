@@ -41,7 +41,7 @@ bool QtGis::addRaterLayer(const QStringList& layerFiles)
         return false;
     }
 
-   // QgsCanvasRefreshBlocker refreshBlocker;
+    QgsCanvasRefreshBlocker refreshBlocker;
 
     // this is messy since some files in the list may be rasters and others may
     // be ogr layers. We'll set returnValue to false if one or more layers fail

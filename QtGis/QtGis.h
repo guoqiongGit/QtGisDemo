@@ -17,6 +17,7 @@ class QgsStatusBarMagnifierWidget;
 class QgsDockWidget;
 class QgsLayerTreeView;
 class QgsLayerTreeMapCanvasBridge;
+class QgsMapLayer;
 
 class QtGis : public DemoRibbonWindow
 {
@@ -87,6 +88,17 @@ private slots:
     void refreshMapCanvas(bool redrawAllLayers = false);
 
     void markDirty();
+    /**
+     * @brief 改变当前激活图层
+    */
+    void onActiveLayerChanged(QgsMapLayer* layer);
+    
+    void autoSelectAddedLayer(QList<QgsMapLayer*> layers);
+    /**
+     * @brief 更新新的图层加载时在图层列表的位置
+    */
+    void updateNewLayerInsertionPoint();
+
 
 
 public slots:

@@ -93,6 +93,15 @@ QIcon DemoRibbonWindow::createIcon(ImagesId id, bool onlyLarge)
     case Add_VectorLayer:
         icon.addFile(":/QtGis/images/res/mActionAddVectorLayer.svg");
         break;
+    case Add_Group:
+        icon.addFile(":/QtGis/images/res/mActionAddGroup.svg");
+        break;
+    case Expand_All:
+        icon.addFile(":/QtGis/images/res/mActionExpandAll.svg");
+        break;
+    case Collapse_All:
+        icon.addFile(":/QtGis/images/res/mActionCollapseAll.svg");
+        break;
     default:
         Q_ASSERT(false);
         break;

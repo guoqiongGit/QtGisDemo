@@ -108,12 +108,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="QLayerCommand.cpp" />
-    <ClCompile Include="WhiteStyle.cpp" />
+    <ClCompile Include="QtGisLayerTreeViewMenuProvider.cpp" />
     <QtRcc Include="QtGis.qrc" />
-    <QtRcc Include="windowStyle.qrc" />
     <QtUic Include="QtGis.ui" />
     <QtMoc Include="QtGis.h" />
-    <ClCompile Include="BlackStyle.cpp" />
     <ClCompile Include="DemoRibbonWindow.cpp" />
     <ClCompile Include="QGISFiles\qgsfeatureaction.cpp" />
     <ClCompile Include="QGISFiles\qgsmaptooladdfeature.cpp" />
@@ -127,13 +125,12 @@
     <QtMoc Include="DemoRibbonWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="WhiteStyle.h" />
     <QtMoc Include="QGISFiles\qgsfeatureaction.h" />
     <QtMoc Include="QGISFiles\qgsmaptooladdfeature.h" />
     <QtMoc Include="QGISFiles\qgsstatusbarcoordinateswidget.h" />
     <QtMoc Include="QGISFiles\qgsstatusbarmagnifierwidget.h" />
     <QtMoc Include="QGISFiles\qgsstatusbarscalewidget.h" />
-    <QtMoc Include="BlackStyle.h" />
+    <ClInclude Include="QtGisLayerTreeViewMenuProvider.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

@@ -38,9 +38,6 @@
     <ClCompile Include="QtGis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <QtRcc Include="windowStyle.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -64,13 +61,10 @@
     <ClCompile Include="QGISFiles\qgsstatusbarscalewidget.cpp">
       <Filter>QGISFiles</Filter>
     </ClCompile>
-    <ClCompile Include="BlackStyle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WhiteStyle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QLayerCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtGisLayerTreeViewMenuProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,15 +87,12 @@
     <QtMoc Include="QGISFiles\qgsstatusbarscalewidget.h">
       <Filter>QGISFiles</Filter>
     </QtMoc>
-    <QtMoc Include="BlackStyle.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="WhiteStyle.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtGisLayerTreeViewMenuProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

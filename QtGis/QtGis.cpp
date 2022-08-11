@@ -4,6 +4,7 @@
 #include <QGridLayout>
 #include <QListWidget>
 #include <QGroupBox>
+#include "QtGisLayerTreeViewMenuProvider.h"
 
 #include "qgsmapcanvas.h"
 #include "qgsapplication.h"
@@ -14,6 +15,11 @@
 #include "QgsLayerTreeView.h"
 #include "QgsLayerTreeModel.h"
 #include "QgsLayerTreeMapCanvasBridge.h"
+#include "QgsLayerTreeRegistryBridge.h"
+#include "QgsLayerTree.h"
+#include "QgsLayerTreeLayer.h"
+#include "QgsLayerTreeViewDefaultActions.h"
+#include "QgsLayerTreeUtils.h"
 
 #include "QGISFiles/qgsStatusBarCoordinatesWidget.h"
 #include "QGISFiles/qgsstatusbarscalewidget.h"
@@ -301,14 +307,52 @@ void QtGis::createLayerTreeView()
 	model->setFlag(QgsLayerTreeModel::UseEmbeddedWidgets);
 	model->setFlag(QgsLayerTreeModel::UseTextFormatting);
 	model->setAutoCollapseLegendNodes(10);
+
 	//将View视图与Model数据绑定
 	mLayerTreeView->setModel(model);
+
 	//将工程实例中的图层根节点与画布绑定，实现与地图画布控件的数据交互
 	mLayerTreeCanvasBridge = new QgsLayerTreeMapCanvasBridge(QgsProject::instance()->layerTreeRoot(), mMapCanvas, this);
-	//将View添加到左侧的Dock控件中展示
-	mLayerMapDock->setWidget(mLayerTreeView);
 
-	//connect(mLayerTreeView, &QgsLayerTreeView::currentLayerChanged, this, &QtGis::onActiveLayerChanged);
+	//添加图层组
+	QAction* addGroup = new QAction(tr("Add Group"), this);
+	addGroup->setIcon(createIcon(Add_Group));
+	addGroup->setToolTip(tr("Add Group"));
+	connect(addGroup, &QAction::triggered, mLayerTreeView->defaultActions(), &QgsLayerTreeViewDefaultActions::addGroup);
+	//展开所有图层组
+	QAction* actionExpandAll = new QAction(tr("Expand All"), this);
+	actionExpandAll->setIcon(createIcon(Expand_All));
+	actionExpandAll->setToolTip(tr("Expand All"));
+	connect(actionExpandAll, &QAction::triggered, mLayerTreeView, &QgsLayerTreeView::expandAllNodes);
+	//折叠所有图层组
+	QAction* actionCollapseAll = new QAction(tr("Collapse All"), this);
+	actionCollapseAll->setIcon(createIcon(Collapse_All));
+	actionCollapseAll->setToolTip(tr("Collapse All"));
+	connect(actionCollapseAll, &QAction::triggered, mLayerTreeView, &QgsLayerTreeView::collapseAllNodes);
+
+	QToolBar* toolbar = new QToolBar(this);
+	toolbar->setIconSize(QSize(16, 16));
+	toolbar->addAction(addGroup);
+	toolbar->addAction(actionExpandAll);
+	toolbar->addAction(actionCollapseAll);
+
+	QVBoxLayout* vboxLayout = new QVBoxLayout;
+	vboxLayout->setContentsMargins(0, 0, 0, 0);
+	vboxLayout->setSpacing(0);
+	vboxLayout->addWidget(toolbar);
+	vboxLayout->addWidget(mLayerTreeView);
+
+	QWidget* w = new QWidget;
+	w->setLayout(vboxLayout);
+
+	//设置点击右键出现菜单项
+	mLayerTreeView->setMenuProvider(new QtGisLayerTreeViewMenuProvider(mLayerTreeView, mMapCanvas));
+
+	//将View添加到左侧的Dock控件中展示
+	mLayerMapDock->setWidget(w);
+
+	connect(mLayerTreeView, &QgsLayerTreeView::currentLayerChanged, this, &QtGis::onActiveLayerChanged);
+	connect(QgsProject::instance()->layerTreeRegistryBridge(), &QgsLayerTreeRegistryBridge::addedLayersToLayerTree, this, &QtGis::autoSelectAddedLayer);
 }
 
 QList<QgsMapCanvas*> QtGis::mapCanvases()
@@ -353,6 +397,65 @@ void QtGis::refreshMapCanvas(bool redrawAllLayers)
 void QtGis::markDirty()
 {
 	QgsProject::instance()->setDirty(true);
+}
+
+void QtGis::onActiveLayerChanged(QgsMapLayer* layer)
+{
+	const QList< QgsMapCanvas* > canvases = mapCanvases();
+	for (QgsMapCanvas* canvas : canvases)
+		canvas->setCurrentLayer(layer);
+	//TODO emit activeLayerChanged
+}
+
+void QtGis::autoSelectAddedLayer(QList<QgsMapLayer*> layers)
+{
+	if (!layers.isEmpty()) {
+		QgsLayerTreeLayer* nodeLayer = QgsProject::instance()->layerTreeRoot()->findLayer(layers[0]->id());
+		if (!nodeLayer)
+			return;
+		auto index = mLayerTreeView->layerTreeModel()->node2index(nodeLayer);
+		mLayerTreeView->setCurrentIndex(index);
+	}
+}
+
+void QtGis::updateNewLayerInsertionPoint()
+{
+	QgsLayerTreeGroup* insertGroup = mLayerTreeView->layerTreeModel()->rootGroup();
+	QModelIndex current = mLayerTreeView->currentIndex();
+	int index = 0;
+	QgsLayerTreeRegistryBridge::InsertionPoint insertionPoint = QgsLayerTreeRegistryBridge::InsertionPoint(insertGroup, index);;
+
+	if (current.isValid())
+	{
+		index = current.row();
+
+		QgsLayerTreeNode* currentNode = mLayerTreeView->currentNode();
+		if (currentNode)
+		{
+			// if the insertion point is actually a group, insert new layers into the group
+			if (QgsLayerTree::isGroup(currentNode))
+			{
+				// if the group is embedded go to the first non-embedded group, at worst the top level item
+				QgsLayerTreeGroup* insertGroup = QgsLayerTreeUtils::firstGroupWithoutCustomProperty(QgsLayerTree::toGroup(currentNode), QStringLiteral("embedded"));
+
+				insertionPoint = QgsLayerTreeRegistryBridge::InsertionPoint(insertGroup, 0);
+			}
+			else {
+				// otherwise just set the insertion point in front of the current node
+				QgsLayerTreeNode* parentNode = currentNode->parent();
+				if (QgsLayerTree::isGroup(parentNode))
+				{
+					// if the group is embedded go to the first non-embedded group, at worst the top level item
+					QgsLayerTreeGroup* parentGroup = QgsLayerTree::toGroup(parentNode);
+					insertGroup = QgsLayerTreeUtils::firstGroupWithoutCustomProperty(parentGroup, QStringLiteral("embedded"));
+					if (parentGroup != insertGroup)
+						index = 0;
+				}
+				insertionPoint = QgsLayerTreeRegistryBridge::InsertionPoint(insertGroup, index);
+			}
+		}
+	}
+	QgsProject::instance()->layerTreeRegistryBridge()->setLayerInsertionPoint(insertionPoint);
 }
 
 void QtGis::slot_fileNew()

@@ -1,8 +1,6 @@
 #include "QtGis.h"
 #include <QtWidgets/QApplication>
 #include "qgsapplication.h"
-#include "WhiteStyle.h"
-#include "BlackStyle.h"
 
 int main(int argc, char *argv[])
 {

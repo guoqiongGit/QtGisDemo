@@ -23,6 +23,9 @@ public:
         Image_Exit,
         Add_RasterLayer,
         Add_VectorLayer,
+        Add_Group,
+        Expand_All,
+        Collapse_All,
     };
     explicit DemoRibbonWindow(QWidget* parent = Q_NULL);
     static QIcon createIcon(ImagesId id, bool onlyLarge = false);

@@ -19,5 +19,8 @@
         <file>images/res/undo16x16.png</file>
         <file>images/res/mActionAddRasterLayer.svg</file>
         <file>images/res/mActionAddVectorLayer.svg</file>
+        <file>images/res/mActionAddGroup.svg</file>
+        <file>images/res/mActionCollapseAll.svg</file>
+        <file>images/res/mActionExpandAll.svg</file>
     </qresource>
 </RCC>
